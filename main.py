@@ -1,15 +1,27 @@
 import matplotlib.pyplot as plt
-from planta import planta
+from ProjetosNovos.PID_Digital.Discret_TF import Discret_TF
 
 def main():
-    t = []
-    u = 1
-    y = []
-    for i in range(1000):
-        t.append(i*0.05)
-        y.append(planta(u))
+    T = 0.05 #Tempo de amostragem
+    tempo_simulacao = 10 #Segundos
+
+    num = [0.0, 0.04553567, -0.03920755]
+    den = [1.0, -1.70468809, 0.70468809]
+
+    planta = Discret_TF(num, den)
+
+    t = [] #Vetor de tempo
+    y = [] #Vetor de saidas
+    u = 1.0 #Entrada do sistema (step)
+
+    for i in range(int(tempo_simulacao / T)):
+        t.append(i * T)
+        y.append(planta.update(u))
 
     plt.plot(t, y)
+    plt.xlabel("Tempo [s]")
+    plt.ylabel("Saída")
+    plt.grid()
     plt.show()
 
 
